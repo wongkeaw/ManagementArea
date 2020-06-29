@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://192.168.99.100:3306/ManagementArea?useSSL=false
+    username: root
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true
+  mvc:    log-request-details: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB    
+logging:
+  level:
+    org:
+      springframework:
+        web: TRACE
+      hibernate: INFO
+  
+server:
+  port: 8080
+  

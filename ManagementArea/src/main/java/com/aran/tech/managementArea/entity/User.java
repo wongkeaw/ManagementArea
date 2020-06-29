@@ -3,7 +3,7 @@
  */
 package com.aran.tech.managementArea.entity;
 
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,11 +18,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +27,7 @@ import lombok.Setter;
  *
  */
 @Entity
-public class User implements UserDetails {
+public class User implements Serializable {
 	
 	
 	public static final char STATUS_LOCK = 'L' ;
@@ -51,7 +47,7 @@ public class User implements UserDetails {
 	
 	@Getter
     @Setter
-	@Column(unique = true)
+    @Column(unique = true , updatable = false)
 	private String userunique ;
 
 	@Getter
@@ -80,6 +76,33 @@ public class User implements UserDetails {
     @Setter
     private char status ;
     
+    @Getter
+    @Setter
+    private String blackguardImage ;
+    
+	@Getter
+    @Setter
+    @Transient
+	private String blackguardImageFileSource ;
+	
+	@Getter
+    @Setter
+    @Transient
+	private boolean blackguardImageIsDownload ;
+    
+    @Getter
+    @Setter
+    private String profileImage ;
+    
+	@Getter
+    @Setter
+    @Transient
+	private String profileImageFileSource ;
+	
+	@Getter
+    @Setter
+    @Transient
+	private boolean profileImageIsDownload ;
     
     @Getter
     @Setter
@@ -95,6 +118,7 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate(){
         this.created_At = new Date();
+        this.status= STATUS_ACTIVE ;
         this.userunique = UUID.randomUUID().toString()  ;
     }
     
@@ -103,37 +127,5 @@ public class User implements UserDetails {
         this.updated_At = new Date();
     }
     
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-    	if ( this.getStatus() == STATUS_LOCK) {
-    		return false ;
-    	}
-        return true;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isEnabled() {
-        return true;
-    } 
 
 }

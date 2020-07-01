@@ -1,18 +1,12 @@
-/**
- * 
- */
 package com.aran.tech.managementArea.validator;
-
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.aran.tech.managementArea.entity.User;
-
+import com.aran.tech.managementArea.domain.User;
 /**
  * @author oawon
- *
  */
 @Component
 public class UserValidator implements Validator {

@@ -1,0 +1,11 @@
+file:
+  upload-dir: D:/trackYouX/uploads
+  
+app:
+  security:
+    constants:
+      expiration_time: 0 # 0*60*60*1000
+      
+images:
+  blackguard: blackgroup.jpg
+  profile: profile.jpg 

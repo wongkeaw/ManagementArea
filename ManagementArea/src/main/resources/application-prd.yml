@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.99.100:3306/ManagementArea?useSSL=false
+    url: jdbc:mysql://34.87.140.46:3306/ManagementArea?useSSL=false
     username: root
-    password: password
+    password: Ongart278612
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:

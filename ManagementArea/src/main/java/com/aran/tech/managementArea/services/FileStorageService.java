@@ -60,8 +60,10 @@ public class FileStorageService {
 
 			// Copy file to the target location (Replacing existing file with the same name)
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
-			//InputStream imageStream = imageResizer.resizeImage(file.getInputStream(), fileName, 0.5) ;
-			//Files.copy(imageStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			/* for resize image
+			InputStream imageStream = imageResizer.resizeImage(file.getInputStream(), fileName, 0.5) ;
+			Files.copy(imageStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			 */
 			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
 			return fileName;

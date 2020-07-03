@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.aran.tech</groupId>
 	<artifactId>managementArea</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>ManagementArea</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -80,6 +80,21 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>libraries-bom</artifactId>
+			<version>7.0.0</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>1.111.1</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>

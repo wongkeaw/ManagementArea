@@ -51,7 +51,7 @@ public class FetchFileController {
 		return new FetchUploadFileResponse (fileName)  ;
 	}
 	private String upload( MultipartFile file , Principal principal ) {
-		String fileName = fileStorageService.storeFile(file , principal);
+		String fileName = fileStorageService.uploadfileToCloud(file , principal);
 		System.out.println("fileName :"+ fileName);
 		return fileName ;
 	}
@@ -67,7 +67,7 @@ public class FetchFileController {
 	@GetMapping("/downloadFile/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 		// Load file as Resource
-		Resource resource = fileStorageService.loadFileAsResource(fileName);
+		Resource resource = fileStorageService.loadFileFromCloudAsResource(fileName);
 
 		// Try to determine file's content type
 		String contentType = null;

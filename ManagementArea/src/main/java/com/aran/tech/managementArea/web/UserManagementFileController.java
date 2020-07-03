@@ -32,31 +32,33 @@ import com.aran.tech.managementArea.services.UserService;
 @RestController
 @RequestMapping("/api/usersMA/file")
 public class UserManagementFileController {
-	
+
 	private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
 	@Autowired
 	private FileStorageService fileStorageService;
-	
+
 	@Autowired
-	UserService userService ;
-	
+	UserService userService;
+
 	@PostMapping("/uploadFile")
-	public User uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("uploadType") String uploadType, Principal principal ) {
-		String photos = this.upload(file, principal) ;
-		User user = userService.saveOrUpdateImage(photos , uploadType ,principal.getName()) ;
-		return user ;
+	public User uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("uploadType") String uploadType,
+			Principal principal) {
+		String photos = this.upload(file, principal);
+		User user = userService.saveOrUpdateImage(photos, uploadType, principal.getName());
+		return user;
 	}
-	private String upload( MultipartFile file , Principal principal ) {
-		String fileName = fileStorageService.storeFile(file , principal);
-		System.out.println("fileName :"+ fileName);
-		return fileName ;
+
+	private String upload(MultipartFile file, Principal principal) {
+		String fileName = fileStorageService.uploadfileToCloud(file, principal);
+		System.out.println("fileName :" + fileName);
+		return fileName;
 	}
-	
+
 	@GetMapping("/downloadFile/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 		// Load file as Resource
-		Resource resource = fileStorageService.loadFileAsResource(fileName);
+		Resource resource = fileStorageService.loadFileFromCloudAsResource(fileName);
 
 		// Try to determine file's content type
 		String contentType = null;
@@ -75,6 +77,5 @@ public class UserManagementFileController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 				.body(resource);
 	}
-
 
 }

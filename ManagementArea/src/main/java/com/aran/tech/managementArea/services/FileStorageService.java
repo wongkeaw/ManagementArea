@@ -13,9 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aran.tech.managementArea.exceptions.FileNotFoundException;
 import com.aran.tech.managementArea.exceptions.FileStorageException;
 import com.aran.tech.managementArea.property.FileStorageProperties;
+import com.aran.tech.managementArea.services.google.DownloadObject;
+import com.aran.tech.managementArea.services.google.UploadObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,12 @@ public class FileStorageService {
 	
 	@Autowired
 	ImageResizer imageResizer ;
+	
+	@Autowired
+	DownloadObject downloadObject ;
+	
+	@Autowired
+	UploadObject uploadObject ;
 
 	@Autowired
 	public FileStorageService(FileStorageProperties fileStorageProperties) {
@@ -46,7 +53,7 @@ public class FileStorageService {
 			throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
 		}
 	}
-
+	@Deprecated
 	public String storeFile(MultipartFile file , Principal principal ) {
 		// Normalize file name
 		//String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -71,7 +78,7 @@ public class FileStorageService {
 			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 		}
 	}
-
+	@Deprecated
 	public Resource loadFileAsResource(String fileName) {
 		try {
 			Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -83,6 +90,33 @@ public class FileStorageService {
 			}
 		} catch (MalformedURLException ex) {
 			throw new FileNotFoundException("File not found " + fileName, ex);
+		}
+	}
+	
+	public Resource loadFileFromCloudAsResource(String fileName) {
+		try {
+			//Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+			//Resource resource = new UrlResource(filePath.toUri());
+			Resource resource = downloadObject.downloadObject(fileName) ;
+			if (resource.exists()) {
+				return resource;
+			} else {
+				throw new FileNotFoundException("File not found " + fileName);
+			}
+		} catch (MalformedURLException ex) {
+			throw new FileNotFoundException("File not found " + fileName, ex);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			throw new FileNotFoundException("File not found " + fileName, ex);
+		}
+	}
+	
+	public String uploadfileToCloud(MultipartFile file , Principal principal ) {
+		try {
+			return uploadObject.uploadObject(file) ;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "" ;
 		}
 	}
 }

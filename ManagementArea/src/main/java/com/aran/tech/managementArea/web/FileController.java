@@ -54,7 +54,8 @@ public class FileController {
 	
 	@PostMapping("/uploadFile")
 	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("uploadType") String uploadType ,@RequestParam("imageToken") String imageToken , Principal principal ) {
-		String fileName = fileStorageService.storeFile(file , principal);
+		//String fileName = fileStorageService.storeFile(file , principal);
+		String fileName = fileStorageService.uploadfileToCloud(file , principal);
 
 		//String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path(FileController.API_FILE_DOWNLOAD_FILE).path(fileName).toUriString();
 		ImageInfo imageInfo = new ImageInfo(imageToken, fileName, uploadType, file.getContentType(), file.getSize()) ;
@@ -71,7 +72,7 @@ public class FileController {
 	@GetMapping("/downloadFile/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 		// Load file as Resource
-		Resource resource = fileStorageService.loadFileAsResource(fileName);
+		Resource resource = fileStorageService.loadFileFromCloudAsResource(fileName);
 
 		// Try to determine file's content type
 		String contentType = null;
